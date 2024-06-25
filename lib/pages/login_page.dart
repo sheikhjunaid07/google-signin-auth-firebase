@@ -33,16 +33,13 @@ class _LoginPageState extends State<LoginPage> {
 
       //pop the dialog box
       Navigator.pop(context);
-
     } on FirebaseAuthException catch (e) {
-
       //pop the dialog box
       Navigator.pop(context);
       //wrong email
       if (e.code == "user-not-found") {
         wrongEmailMsg();
       } else if (e.code == 'wrong-password') {
-        
         //wrong password
         wrongPasswordMsg();
       }
@@ -134,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 const SizedBox(height: 80),
 
-                //not a member register now
+                //don't have an account register yourself
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
