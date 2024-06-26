@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:login_signup_auth/authenticate/google_service.dart';
 import 'package:login_signup_auth/components/divider.dart';
 import 'package:login_signup_auth/components/my_button.dart';
 import 'package:login_signup_auth/components/my_text_field.dart';
@@ -15,19 +16,21 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
+
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  // show error messege to user as a dialog box
-  void showErrorMsg(String messege) {
+  // show error message to user as a dialog box
+  void showErrorMsg(String message) {
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
               backgroundColor: Colors.blueGrey,
               title: Center(
-                  child: Text(messege, style: TextStyle(color: Colors.white))));
+                  child: Text(message,
+                      style: const TextStyle(color: Colors.white))));
         });
   }
 
@@ -99,7 +102,10 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 20),
 
                 //login button
-                MyButton(onTap: userSignIn, text: "Login",),
+                MyButton(
+                  onTap: userSignIn,
+                  text: "Login",
+                ),
 
                 const SizedBox(height: 30),
 
@@ -109,16 +115,17 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 25),
 
                 //google + apple logo
-                const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      //google logo
-                      SquareTile(imgPath: "assets/logo/google.png"),
-                      SizedBox(width: 26),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  //google logo
+                  SquareTile(
+                    imgPath: "assets/logo/google.png",
+                    onTap: () => GoogleService().signInWithGoogle(),
+                  ),
+                  const SizedBox(width: 26),
 
-                      //apple logo
-                      SquareTile(imgPath: "assets/logo/apple.png"),
-                    ]),
+                  //apple logo
+                  SquareTile(imgPath: "assets/logo/apple.png", onTap: () {}),
+                ]),
 
                 const SizedBox(height: 60),
 
