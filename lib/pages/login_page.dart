@@ -16,7 +16,6 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -80,6 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                         TextStyle(color: Colors.grey.shade700, fontSize: 16)),
 
                 const SizedBox(height: 30),
+
                 //email field
                 MyTextField(
                     obsecureText: false,
@@ -124,7 +124,9 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(width: 26),
 
                   //apple logo
-                  SquareTile(imgPath: "assets/logo/apple.png", onTap: () {}),
+                  SquareTile(
+                      imgPath: "assets/logo/apple.png",
+                      onTap: () => GoogleService().signInWithGoogle()),
                 ]),
 
                 const SizedBox(height: 60),

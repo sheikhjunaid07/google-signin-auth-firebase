@@ -4,7 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 class GoogleService {
   //google sign in
   signInWithGoogle() async {
-    //open new page for select the image
+    //open new page for select the email
     final GoogleSignInAccount? googleAccount = await GoogleSignIn().signIn();
 
     //get the user details and wait until user is authenticate
