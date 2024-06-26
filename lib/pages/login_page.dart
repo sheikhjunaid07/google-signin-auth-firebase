@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:login_signup_auth/components/divider.dart';
 import 'package:login_signup_auth/components/my_button.dart';
 import 'package:login_signup_auth/components/my_text_field.dart';
@@ -7,7 +8,8 @@ import 'package:login_signup_auth/components/square_tile.dart';
 import 'package:login_signup_auth/pages/forget_password.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  final Function()? onTap;
+  const LoginPage({super.key, required this.onTap});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -15,8 +17,19 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
-
   final passwordController = TextEditingController();
+
+  // show error messege to user as a dialog box
+  void showErrorMsg(String messege) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+              backgroundColor: Colors.blueGrey,
+              title: Center(
+                  child: Text(messege, style: TextStyle(color: Colors.white))));
+        });
+  }
 
   //user sign in method
   void userSignIn() async {
@@ -26,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
           return const Center(child: CircularProgressIndicator());
         }));
 
-    //try login
+    //try to login
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.text, password: passwordController.text);
@@ -36,32 +49,11 @@ class _LoginPageState extends State<LoginPage> {
     } on FirebaseAuthException catch (e) {
       //pop the dialog box
       Navigator.pop(context);
-      //wrong email
-      if (e.code == "user-not-found") {
-        wrongEmailMsg();
-      } else if (e.code == 'wrong-password') {
-        //wrong password
-        wrongPasswordMsg();
-      }
+      //show email , password error
+      showErrorMsg(e.code);
     }
-  }
 
-  //dialog box for wrong email
-  void wrongEmailMsg() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return const AlertDialog(title: Text("Incorrect Email!!"));
-        });
-  }
-
-  //dialog box for wrong password
-  void wrongPasswordMsg() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return const AlertDialog(title: Text("Incorrect Password!!"));
-        });
+    //dialog box for wrong email
   }
 
   @override
@@ -69,8 +61,8 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: Colors.grey[300],
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Center(
+        child: Center(
+          child: SingleChildScrollView(
             child: Column(
               children: [
                 const SizedBox(height: 24),
@@ -85,7 +77,6 @@ class _LoginPageState extends State<LoginPage> {
                         TextStyle(color: Colors.grey.shade700, fontSize: 16)),
 
                 const SizedBox(height: 30),
-
                 //email field
                 MyTextField(
                     obsecureText: false,
@@ -108,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 20),
 
                 //login button
-                MyButton(onTap: userSignIn),
+                MyButton(onTap: userSignIn, text: "Login",),
 
                 const SizedBox(height: 30),
 
@@ -129,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                       SquareTile(imgPath: "assets/logo/apple.png"),
                     ]),
 
-                const SizedBox(height: 80),
+                const SizedBox(height: 60),
 
                 //don't have an account register yourself
                 Row(
@@ -138,9 +129,12 @@ class _LoginPageState extends State<LoginPage> {
                     Text("Don't have an account?",
                         style: TextStyle(color: Colors.grey.shade700)),
                     const SizedBox(width: 5),
-                    const Text("Register Here",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.blue))
+                    GestureDetector(
+                      onTap: widget.onTap,
+                      child: const Text("Register Here",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.blue)),
+                    )
                   ],
                 )
               ],

@@ -4,11 +4,12 @@ class MyTextField extends StatelessWidget {
   final bool obsecureText;
   final controller;
   final String labelText;
-  const MyTextField(
-      {super.key,
-      required this.controller,
-      required this.obsecureText,
-      required this.labelText});
+  const MyTextField({
+    super.key,
+    required this.controller,
+    required this.obsecureText,
+    required this.labelText,
+  });
 
   @override
   Widget build(BuildContext context) {
